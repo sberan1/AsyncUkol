@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +19,10 @@ namespace AsyncUkol
 {
     public partial class MainWindow : Window
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        static CancellationTokenSource cts = new CancellationTokenSource();
+        CancellationToken ct;
+
         private bool[] MakeSieve(int max)
         {
             bool[] is_prime = new bool[max + 1];
@@ -40,10 +46,56 @@ namespace AsyncUkol
             maxCislo.Items.Add("1000000");
             maxCislo.Items.Add("100000000");
         }
-
-        private void VybranoSefe_Click(object sender, RoutedEventArgs e)
+        public void Metoda1() 
         {
+           
+            for (int i = 0; i < int.Parse(maxCislo.Text); i++)
+            {
+                
+            }
+        }
+        public void Metoda2()
+        {
+            for (int i = 0; i < int.Parse(maxCislo.Text); i++)
+            {
 
+            }
+        }
+        public void Metoda3()
+        {
+            for (int i = 0; i < int.Parse(maxCislo.Text); i++)
+            {
+
+            }
+        }
+
+        private async void VybranoSefe_Click(object sender, RoutedEventArgs e)
+        {
+            if (Combobox.SelectedItem == "placeholder" && maxCislo.SelectedItem != null)
+            {
+                await Task.Run(() =>
+                {
+                    Metoda3();
+                });
+            }
+            if (Combobox.SelectedItem == "placeholder1" && maxCislo.SelectedItem != null)
+            {
+                await Task.Run(() =>
+                {
+                    Metoda3();
+                });
+            }
+            if (Combobox.SelectedItem == "placeholder2" && maxCislo.SelectedItem != null)
+            {
+                await Task.Run(() =>
+                {
+                    Metoda3();
+                });
+            }
+            else
+            {
+                MessageBox.Show("Zapomnel jste vybrat jeden parametr", "Chyba", MessageBoxButton.OK);
+            }
         }
     }
 }

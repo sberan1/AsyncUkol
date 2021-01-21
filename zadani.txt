@@ -1,0 +1,74 @@
+Napište WPF aplikaci, která bude hledat prvoèísla, která splòují podmínky zadané uživatelem.
+Napøíklad umožní najít prvoèíslo, které obsahuje alespoò 5 èíslic '3' nebo prvoèíslo, 
+ve kterém jsou za sebou tøi stejné èíslice. Program vytvoøte tak, aby uživatel mohl zadat 
+více úloh najednou (maximálnì 3) a tyto úlohy bìžely na thread poolu. Pokud program najde prvoèíslo, 
+které splòuje dané zadání, ukáže je na uživatelském rozhraní a potom dovolí vytvoøení nového zadání. 
+Zvolte vhodnou formu indikace, že výpoèet právì probíhá, na uživatelském rozhraní.
+
+Náš rozbor bìhem hodiny - pro inspiraci:
+
+K zadání Asynchronního programování
+===================================
+
+Pøirozená èísla : 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+Eratosthenovo síto => 2, 3, 5, 7, 11, 13, 17, 19, 23, ...
+
+Na threadu v threadpoolu
+{
+    Kritérium: 3 jednièky za sebou
+
+    1.Hledání prvoèísla > 10
+    2.Porovnání prvoèísla s kritériem 111 - splòuje => vypsat
+    3.Uzavøení výpoètu
+}
+
+{
+    Kritérium:  obsahuje 3 a 1
+    1.Hledání prvoèísla > 10
+    2.Porovnání prvoèísla s kritériem 3 a 1 - splòuje => vypsat
+    3.Uzavøení výpoètu
+}
+
+
+UIthread
+{
+    Uživatelský interface pro výbìr kritéria
+    Zobrazení výsledkù
+
+    Úloha 1 :   Kritérium:                            Výsledek:                  Probíhá
+    Úloha 2 :   Kritérium: Dve jednièky za sebou      Výsledek: 11
+    Úloha 3 :   Kritérium:                            Výsledek:                  Probíhá
+
+}
+
+Metoda2() {
+    for (int i = 0; i < s.Length)
+        ....
+    }
+
+Metoda1() {
+    for (int i = 0; i < s.Length)
+        ....
+    }
+
+Metoda3() {
+    for (int i = 0; i < s.Length)
+        ....
+    }
+
+// tohle je typ metody!
+public delegate bool Kriterium(string s)
+
+Kriterium k;
+
+// ... a tohle je pole metod
+                       0        1        2
+Kriterium[] kArr = {Metoda1, Metoda2, Metoda3, ...}
+
+k = kArr[2]
+
+Obecná èást - platí pro všechna kritéria
+if (k(s)) { // if (Metoda3(s) po pøiøazení k = kArr[2])
+    vypiš hotovo
+    vypiš výsledek
+}
