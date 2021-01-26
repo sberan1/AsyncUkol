@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,11 +20,10 @@ namespace AsyncUkol
 {
     public partial class MainWindow : Window
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        static CancellationTokenSource cts = new CancellationTokenSource();
+        
+        static CancellationTokenSource cts;
         CancellationToken ct;
-
-        private bool[] MakeSieve(int max)
+        public virtual bool[] MakeSieve(int max)
         {
             bool[] is_prime = new bool[max + 1];
             for (int i = 2; i <= max; i++) is_prime[i] = true;
@@ -45,51 +45,169 @@ namespace AsyncUkol
             maxCislo.Items.Add("10000");
             maxCislo.Items.Add("1000000");
             maxCislo.Items.Add("100000000");
-        }
-        public void Metoda1() 
-        {
-           
-            for (int i = 0; i < int.Parse(maxCislo.Text); i++)
-            {
-                
-            }
-        }
-        public void Metoda2()
-        {
-            for (int i = 0; i < int.Parse(maxCislo.Text); i++)
-            {
 
-            }
-        }
-        public void Metoda3()
-        {
-            for (int i = 0; i < int.Parse(maxCislo.Text); i++)
-            {
+            Combobox.Items.Add("prvocisla obsahujici 7");
+            Combobox.Items.Add("prvocisla koncici 4");
+            Combobox.Items.Add("prvocisla obsahujici prvni dve 1");
 
-            }
         }
+        
 
         private async void VybranoSefe_Click(object sender, RoutedEventArgs e)
         {
-            if (Combobox.SelectedItem == "placeholder" && maxCislo.SelectedItem != null)
+            int max = int.Parse(maxCislo.SelectedItem.ToString());
+            if (Combobox.SelectedItem.ToString() == "prvocisla obsahujici 7" && maxCislo.SelectedItem != null)
             {
+                cts = new CancellationTokenSource();
+                ct = cts.Token;
+
                 await Task.Run(() =>
                 {
-                    Metoda3();
+                    List<int> prvocislaHodnoty = new List<int>();
+                    bool[] prvocisla = new bool[max + 1];
+                    this.Dispatcher.Invoke(() =>
+                    {
+                    Listbox.Items.Add("prvocisla obsahujici 7                                       Working on it");
+                    });
+                for (int i = 2; i <= max; i++) prvocisla[i] = true;
+
+                    for (int i = 2; i <= max; i++)
+                    {
+                        if (prvocisla[i])
+                        {
+                            for (int j = i * 2; j <= max; j += i)
+                                prvocisla[j] = false;
+                        }
+                    }
+                    for (int i = 0; i < max; i++)
+                    {
+                        if (prvocisla[i] == true)
+                        {
+                            prvocislaHodnoty.Add(i);
+                        }
+                    }
+
+                    prvocislaHodnoty.ForEach(delegate (int name)
+                    {
+                        string strName = name.ToString();
+
+
+                        if (strName.Contains('7'))
+                        {
+                            using StreamWriter writer = new StreamWriter(@"C:\Temp\vysledkyma7.txt");
+                            writer.Write(name);
+                        }
+                    });
+                    this.Dispatcher.Invoke(() =>
+                    {
+                    int a = Listbox.Items.IndexOf("prvocisla obsahujici 7                                       Working on it");
+                    Listbox.Items.RemoveAt(a);
+                    Listbox.Items.Insert(a, "prvocisla obsahujici 7                                       Hotovo");
+                    });
+                    cts.Cancel();
                 });
             }
-            if (Combobox.SelectedItem == "placeholder1" && maxCislo.SelectedItem != null)
+            if (Combobox.SelectedItem.ToString() == "prvocisla obsahujici prvni dve 1" && maxCislo.SelectedItem != null)
             {
+                cts = new CancellationTokenSource();
+                ct = cts.Token;
+                this.Dispatcher.Invoke(() =>
+                {
+                    Listbox.Items.Add("prvocisla obsahujici prvni dve 1                                       Working on it");
+                });
                 await Task.Run(() =>
                 {
-                    Metoda3();
+                    List<int> prvocislaHodnoty = new List<int>();
+                    bool[] prvocisla = new bool[max + 1];
+                    for (int i = 2; i <= max; i++) prvocisla[i] = true;
+
+                    for (int i = 2; i <= max; i++)
+                    {
+                        if (prvocisla[i])
+                        {
+                            for (int j = i * 2; j <= max; j += i)
+                                prvocisla[j] = false;
+                        }
+                    }
+                    for (int i = 0; i < max; i++)
+                    {
+                        if (prvocisla[i] == true)
+                        {
+                            prvocislaHodnoty.Add(i);
+                        }
+                    }
+                    prvocislaHodnoty.ForEach(delegate (int name)
+                    {
+                        string strName = name.ToString();
+                        int[] digits = strName.Where(char.IsNumber)
+                        .Select(c => int.Parse(c.ToString()))
+                        .ToArray();
+
+                        if (digits[0] == 1 && digits[1] == 1)
+                        {
+                            using StreamWriter writer = new StreamWriter(@"C:\Temp\vysledkydve1.txt");
+                            writer.Write(name);
+                        }
+                    });
+                    this.Dispatcher.Invoke(() =>
+                    {
+                    int a = Listbox.Items.IndexOf("prvocisla obsahujici prvni dve 1                                       Working on it"); 
+                    Listbox.Items.RemoveAt(a); 
+                    Listbox.Items.Insert(a, "prvocisla obsahujici prvni dve 1                                       Hotovo");
+                });
+                cts.Cancel();
                 });
             }
-            if (Combobox.SelectedItem == "placeholder2" && maxCislo.SelectedItem != null)
+            if (Combobox.SelectedItem.ToString() == "prvocisla koncici 4" && maxCislo.SelectedItem != null)
             {
+                cts = new CancellationTokenSource();
+                ct = cts.Token;
+                this.Dispatcher.Invoke(() =>
+                {
+                    Listbox.Items.Add("prvocisla koncici 4                                       Working on it");
+                });
                 await Task.Run(() =>
                 {
-                    Metoda3();
+                    List<int> prvocislaHodnoty = new List<int>();
+                    bool[] prvocisla = new bool[max + 1];
+                    for (int i = 2; i <= max; i++) prvocisla[i] = true;
+
+                    for (int i = 2; i <= max; i++)
+                    {
+                        if (prvocisla[i])
+                        {
+                            for (int j = i * 2; j <= max; j += i)
+                                prvocisla[j] = false;
+                        }
+                    }
+                    for (int i = 0; i < max; i++)
+                    {
+                        if (prvocisla[i] == true)
+                        {
+                            prvocislaHodnoty.Add(i);
+                        }
+                    }
+                    prvocislaHodnoty.ForEach(delegate (int name)
+                    {
+                        string strName = name.ToString();
+                        int[] digits = strName.Where(char.IsNumber)
+                        .Select(c => int.Parse(c.ToString()))
+                        .ToArray();
+
+                        if (digits[digits.Length - 1] == 4)
+                        {
+                            using StreamWriter writer = new StreamWriter(@"C:\Temp\vysledkykonec4.txt");
+                            writer.Write(name);
+                        }
+                    });
+                    this.Dispatcher.Invoke(() =>
+                    {
+                     
+                    int a = Listbox.Items.IndexOf("prvocisla koncici 4                                       Working on it");
+                    Listbox.Items.RemoveAt(a);
+                    Listbox.Items.Insert(a, "prvocisla koncici 4                                       Hotovo");
+                    });
+                    cts.Cancel();
                 });
             }
             else
